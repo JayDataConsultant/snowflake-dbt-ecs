@@ -1,0 +1,14 @@
+dbtlearn:
+  target: dev      
+  outputs:
+    dev:
+      type: snowflake
+      account: uxxilog-hx10480
+      user: dbt
+      password: dbtPassword123
+      role: transform
+      database: airbnb
+      warehouse: compute_wh
+      schema: dev
+      threads: 1
+      client_session_keep_alive: False

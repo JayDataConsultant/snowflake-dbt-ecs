@@ -1,0 +1,43 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: MIT-0
+
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+      
+
+      
+  pre_build:
+    commands:
+      - aws --version
+      - echo 'region - ' - $AWS_DEFAULT_REGION
+      - echo 'repository - ' $REPOSITORY_URI
+      - cd src/dbt-project/
+      - sed -i -e "s/\(type:\).*/\1 $SNOWFLAKE_TYPE/" profiles.yml
+      - sed -i -e "s/\(account:\).*/\1 $SNOWFLAKE_ACCOUNT/" profiles.yml
+      - sed -i -e "s/\(user:\).*/\1 $SNOWFLAKE_USER/" profiles.yml
+      - sed -i -e "s/\(password:\).*/\1 $SNOWFLAKE_PASSWORD/" profiles.yml
+      - sed -i -e "s/\(role:\).*/\1 $SNOWFLAKE_ROLE/" profiles.yml
+      - sed -i -e "s/\(database:\).*/\1 $SNOWFLAKE_DATABASE/" profiles.yml
+      - sed -i -e "s/\(warehouse:\).*/\1 $SNOWFLAKE_WAREHOUSE/" profiles.yml
+      - sed -i -e "s/\(schema:\).*/\1 $SNOWFLAKE_SCHEMA/" profiles.yml
+      - sed -i -e "s/\(threads:\).*/\1 $SNOWFLAKE_THREADS/" profiles.yml
+      - cat profiles.yml
+      - cd ../
+      - echo Logging in to Amazon ECR
+      #- $(aws ecr get-login --region ap-southeast-2 --no-include-email)
+      - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 590312749310.dkr.ecr.ap-southeast-2.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t 590312749310.dkr.ecr.ap-southeast-2.amazonaws.com/jaydbt:latest .
+      - docker tag 590312749310.dkr.ecr.ap-southeast-2.amazonaws.com/jaydbt:latest 590312749310.dkr.ecr.ap-southeast-2.amazonaws.com/dbt:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Push the latest Docker Image...
+      - docker push 590312749310.dkr.ecr.ap-southeast-2.amazonaws.com/dbt:latest
+

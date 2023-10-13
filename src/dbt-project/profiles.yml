@@ -5,7 +5,7 @@ dbtlearn:
       type: snowflake
       account: uxxilog-hx10480
       user: dbt
-      password: dbtPassword123
+      password: *********
       role: transform
       database: airbnb
       warehouse: compute_wh

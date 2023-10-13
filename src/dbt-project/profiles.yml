@@ -3,7 +3,7 @@ dbtlearn:
   outputs:
     dev:
       type: snowflake
-      account: uxxilog-hx10480
+      account: *********
       user: dbt
       password: *********
       role: transform

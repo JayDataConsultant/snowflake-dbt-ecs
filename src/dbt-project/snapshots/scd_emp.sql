@@ -8,5 +8,7 @@
  invalidate_hard_deletes=True
  )
 }}
-select * FROM {{ source('airbnb', 'emp') }}
+
+select * FROM  {{ source('customer', 'emp_fact') }} 
+
 {% endsnapshot %}

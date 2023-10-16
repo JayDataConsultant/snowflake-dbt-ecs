@@ -3,12 +3,12 @@ dbtlearn:
   outputs:
     dev:
       type: snowflake
-      account: *********
+      account: uxxilog-hx10480
       user: dbt
       password: *********
       role: transform
-      database: airbnb
+      database: customer
       warehouse: compute_wh
-      schema: dev
+      schema:  dev
       threads: 1
       client_session_keep_alive: False
